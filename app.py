@@ -47,11 +47,14 @@ def handle_responses():
         with sqlite3.connect(DATABASE) as conn:
             if action == "add":
                 conn.execute('UPDATE posts SET reply = ? WHERE id = ? AND reply IS NULL', (reply, comment_id))
+                conn.commit()
+                return jsonify(success=True, reply=reply)
             elif action == "delete":
                 conn.execute('UPDATE posts SET reply = NULL WHERE id = ?', (comment_id,))
-            conn.commit()
+                conn.commit()
+                return jsonify(success=True)
 
-        return redirect(url_for('handle_responses'))
+        return jsonify(success=False, message="Action failed")
 
     # Fetch all comments and replies for all assessments
     with sqlite3.connect(DATABASE) as conn:
@@ -61,7 +64,6 @@ def handle_responses():
     print(comments)
 
     return render_template('questions.html', comments=comments)
-
 
 @app.route('/post_comment/<int:assessmentID>', methods=['POST'])
 def post_comment(assessmentID):

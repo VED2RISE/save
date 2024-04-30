@@ -1,6 +1,6 @@
 {% extends '0_basic.html' %}
 
-{%block content%}
+{% block content %}
 <div class="container mt-4">
     <h2>Comments and Responses for All Assessments</h2>
     <div class="list-group">
@@ -11,25 +11,72 @@
                 <small class="text-muted">{{ comment[4] }}</small>
             </div>
             <p>{{ comment[3] }}</p>
-            {% if comment[5] %}
-            <div><strong>Reply:</strong> {{ comment[5] }}
-                <form method="post" style="display: inline;">
+            <div id="reply-section-{{ comment[0] }}">
+                {% if comment[5] %}
+                <div><strong>Reply:</strong> {{ comment[5] }}
+                    <form method="post" style="display: inline;" onsubmit="deleteReply(event, {{ comment[0] }})">
+                        <input type="hidden" name="comment_id" value="{{ comment[0] }}">
+                        <input type="hidden" name="action" value="delete">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete Reply</button>
+                    </form>
+                </div>
+                {% else %}
+                <form method="post" onsubmit="postReply(event, {{ comment[0] }})">
                     <input type="hidden" name="comment_id" value="{{ comment[0] }}">
-                    <input type="hidden" name="action" value="delete">
-                    <button type="submit" class="btn btn-danger btn-sm">Delete Reply</button>
+                    <input type="hidden" name="action" value="add">
+                    <textarea name="reply" class="form-control mt-2" rows="1" placeholder="Write your reply here..."></textarea>
+                    <button type="submit" class="btn btn-primary btn-sm mt-2">Reply</button>
                 </form>
+                {% endif %}
             </div>
-            {% else %}
-            <form method="post">
-                <input type="hidden" name="comment_id" value="{{ comment[0] }}">
-                <input type="hidden" name="action" value="add">
-                <textarea name="reply" class="form-control mt-2" rows="1" placeholder="Write your reply here..."></textarea>
-                <button type="submit" class="btn btn-primary btn-sm mt-2">Reply</button>
-            </form>
-            {% endif %}
         </div>
         {% endfor %}
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-{%endblock%}
+<script>
+function postReply(event, commentId) {
+    event.preventDefault();
+    const form = event.target;
+    const data = new FormData(form);
+    fetch('/responses', {
+        method: 'POST',
+        body: data
+    }).then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              const replySection = document.getElementById(`reply-section-${commentId}`);
+              const replyContainer = document.createElement('div');
+              replyContainer.innerHTML = `<strong>Reply:</strong> ${data.reply}
+                  <form method="post" style="display: inline;" onsubmit="deleteReply(event, ${commentId})">
+                      <input type="hidden" name="comment_id" value="${commentId}">
+                      <input type="hidden" name="action" value="delete">
+                      <button type="submit" class="btn btn-danger btn-sm">Delete Reply</button>
+                  </form>`;
+              replySection.innerHTML = '';
+              replySection.appendChild(replyContainer);
+          }
+      }).catch(error => console.error('Error:', error));
+}
+
+function deleteReply(event, commentId) {
+    event.preventDefault();
+    const form = event.target;
+    const data = new FormData(form);
+    fetch('/responses', {
+        method: 'POST',
+        body: data
+    }).then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              const replySection = document.getElementById(`reply-section-${commentId}`);
+              replySection.innerHTML = `<form method="post" onsubmit="postReply(event, ${commentId})">
+                  <input type="hidden" name="comment_id" value="${commentId}">
+                  <input type="hidden" name="action" value="add">
+                  <textarea name="reply" class="form-control mt-2" rows="1" placeholder="Write your reply here..."></textarea>
+                  <button type="submit" class="btn btn-primary btn-sm mt-2">Reply</button>
+              </form>`;
+          }
+      }).catch(error => console.error('Error:', error));
+}
+</script>
+{% endblock %}
