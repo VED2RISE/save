@@ -3,6 +3,7 @@
 {% block content %}
 <div class="container mt-4">
     <h2>Comments and Responses for All Assessments</h2>
+    <p></p>
     <div class="list-group">
         {% for comment in comments %}
         <div class="list-group-item list-group-item-action">
@@ -13,7 +14,7 @@
             <p>{{ comment[3] }}</p>
             <div id="reply-section-{{ comment[0] }}">
                 {% if comment[5] %}
-                <div> {{ comment[5] }}
+                <div>{{ comment[5] }}
                     <form method="post" style="display: inline;" onsubmit="deleteReply(event, {{ comment[0] }})">
                         <input type="hidden" name="comment_id" value="{{ comment[0] }}">
                         <input type="hidden" name="action" value="delete">
@@ -41,21 +42,23 @@ function postReply(event, commentId) {
     fetch('/responses', {
         method: 'POST',
         body: data
-    }).then(response => response.json())
-      .then(data => {
-          if (data.success) {
-              const replySection = document.getElementById(`reply-section-${commentId}`);
-              const replyContainer = document.createElement('div');
-              replyContainer.innerHTML = `<strong>Reply:</strong> ${data.reply}
-                  <form method="post" style="display: inline;" onsubmit="deleteReply(event, ${commentId})">
-                      <input type="hidden" name="comment_id" value="${commentId}">
-                      <input type="hidden" name="action" value="delete">
-                      <button type="submit" class="btn btn-danger btn-sm">Delete Reply</button>
-                  </form>`;
-              replySection.innerHTML = '';
-              replySection.appendChild(replyContainer);
-          }
-      }).catch(error => console.error('Error:', error));
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const replySection = document.getElementById(`reply-section-${commentId}`);
+            const replyContainer = document.createElement('div');
+            replyContainer.innerHTML = `<strong>Reply:</strong> ${data.reply}
+                <form method="post" style="display: inline;" onsubmit="deleteReply(event, ${commentId})">
+                    <input type="hidden" name="comment_id" value="${commentId}">
+                    <input type="hidden" name="action" value="delete">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete Reply</button>
+                </form>`;
+            replySection.innerHTML = '';
+            replySection.appendChild(replyContainer);
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 
 function deleteReply(event, commentId) {
@@ -65,18 +68,20 @@ function deleteReply(event, commentId) {
     fetch('/responses', {
         method: 'POST',
         body: data
-    }).then(response => response.json())
-      .then(data => {
-          if (data.success) {
-              const replySection = document.getElementById(`reply-section-${commentId}`);
-              replySection.innerHTML = `<form method="post" onsubmit="postReply(event, ${commentId})">
-                  <input type="hidden" name="comment_id" value="${commentId}">
-                  <input type="hidden" name="action" value="add">
-                  <textarea name="reply" class="form-control mt-2" rows="1" placeholder="Write your reply here..."></textarea>
-                  <button type="submit" class="btn btn-primary btn-sm mt-2">Reply</button>
-              </form>`;
-          }
-      }).catch(error => console.error('Error:', error));
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const replySection = document.getElementById(`reply-section-${commentId}`);
+            replySection.innerHTML = `<form method="post" onsubmit="postReply(event, ${commentId})">
+                <input type="hidden" name="comment_id" value="${commentId}">
+                <input type="hidden" name="action" value="add">
+                <textarea name="reply" class="form-control mt-2" rows="1" placeholder="Write your reply here..."></textarea>
+                <button type="submit" class="btn btn-primary btn-sm mt-2">Reply</button>
+            </form>`;
+        }
+    })
+    .catch(error => console.error('Error:', error));
 }
 </script>
 {% endblock %}

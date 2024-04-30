@@ -28,18 +28,16 @@
 
 <p></p>
 
-<form method="POST" action="/post_comment/{{ assessment.Assessment_ID }}">
-    <div class="comment-section">
-        <h5>Leave a Comment for this Assignment. The lecturer will see it! Only 1 availbale </h5>
-        <textarea name="commentText" rows="4" cols="80" placeholder="Write your comment here..."></textarea>
-        <button type="submit" class="btn btn-success">Post Comment</button>
-    </div>
+<form method="POST" action="/post_comment/{{ assessment.Assessment_ID }}" class="comment-section">
+    <h5>Leave a Comment for this Assignment. The lecturer will see it! Only 1 available </h5>
+    <textarea name="commentText" rows="4" placeholder="Write your comment here..."></textarea>
+    <button type="submit" class="btn btn-success">Post Comment</button>
 </form>
 
 {% for comment in comments %}
 <div class="comment">
-    <p>{{ comment['username'] }}<span class="comment-date"> - posted at {{ comment['time_posted'] }}</span></p>
-    <p> {{comment["comment_text"]}}</p>
+    <p><strong>{{ comment['username'] }}</strong><span class="comment-date"> - posted at {{ comment['time_posted'] }}</span></p>
+    <p>{{ comment["comment_text"] }}</p>
     <form method="POST" action="/delete_comment/{{ comment['id'] }}">
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>

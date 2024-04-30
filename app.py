@@ -54,11 +54,15 @@ def user_replies():
 
 
 @app.route('/responses', methods=['GET', 'POST'])
+
 def handle_responses():
     if request.method == 'POST':
         comment_id = request.form.get('comment_id')
+
         reply = request.form.get('reply')
-        reply = current_user.username + " " + "replied: " + reply
+        if reply is not None:  # Проверка, что переменная не None
+            reply = current_user.username + " replied: " + reply
+
         action = request.form.get('action')
 
         with sqlite3.connect(DATABASE) as conn:
