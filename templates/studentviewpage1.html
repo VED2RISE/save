@@ -1,0 +1,16 @@
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+
+    {% for assessment in Studentassessments %}
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <a href="{{ url_for('studentassessmentdetails', assess=assessment['Assessment_ID']) }}" button type="button" class="btn btn-primary btn-lg" >Module ID: {{ assessment['Module_ID'] }} Lecturer:  {{ assessment['Lecturer_ID'] }} Deadline
+            : {{ assessment['Deadline'] }}</button>
+        </div>
+
+        {% else %}
+    <li><h1>no assessments</h1></li>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+{% block title %}View Assessments{% endblock %}
+{% block content %}
+  {{ super() }}
+  <h2>Available Assessments:</h2>
+  <!-- /maybe use a .container here to center the buttons whilst keeping them wide, -->
+  {% for assessment in activeassessments %}
+  <div class="card">
+    <div class="card-body">
+
+            
+        Module ID: {{ assessment['Module_ID'] }} Lecturer:  {{ assessment['Lecturer_ID'] }} Deadline
+         : {{ assessment['Deadline'] }} Assessment : {{ assessment['Assessment_ID'] }}
+         <br>
+         <br>
+    
+         <a href="{{ url_for('summative_addassessmentquestions', assessmentid=assessment['Assessment_ID'])}}" button type="button" >
+Edit Questions  
+         </a>
+        </button>
+        <br>
+        <br>
+        <a href="{{ url_for('summative_deleteassessment', assessmentid=assessment['Assessment_ID'])}}" button type="button" >
+            Delete Assignment   
+        </a>
+        </button>
+      </div>
+    </div>
+      {% else %}
+  <li><h1>no assessments</h1></li>
+{% endfor %}
+{% endblock %}

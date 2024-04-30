@@ -1,0 +1,82 @@
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+
+<h3>Assessment Questions:</h3>
+{% set questioncriterea2 = []%}
+
+{% for q in questions %}
+{% do questioncriterea2.append(q) %}
+
+    <div class="card">
+    <div class="card-body">
+        {{ q['Question'] }}<br>
+
+        Possible answers:
+        <br>
+             {% for option in q['Options'] %}
+              {{ option}}   <br>
+             {% endfor %}    
+        Answer: {{ q['Correct_answer']}}
+        <br><br>
+        {% if q['Hint']%}
+        Hint : {{ q['Hint']}}  
+        {% endif %}     
+        ID : {{q['Question_ID']}}    
+<br><br>
+
+  
+
+<form action="{{ url_for('qd')}}" method="post">
+  <input type="hidden" name="qid" value="{{q['Question_ID']}}">  
+  <input type="hidden" name="assessmentid" value={{assessmentid}}> 
+  <button type="submit">Delete question from assessment</button>
+</form>
+
+      </div>
+  </div>
+
+{% endfor %}
+{% if questioncriterea2|length == 0%}
+<h4>No Questions currently in assessment</h4>
+{% endif %}
+
+<h3>Available Questions:</h3>
+{% set assessmentquestions =  questions|map(attribute='Question_ID')|list  %}
+{% set questioncriterea = []%}
+{% for a in question2 %}
+{% if a['Question_ID'] not in assessmentquestions %}
+{% do questioncriterea.append(a) %}
+    <div class="card">
+    <div class="card-body">
+        {{ a['Question'] }}<br>
+
+        Possible answers:
+        <br>
+             {% for option in a['Options'] %}
+              {{ option}}   <br>
+             {% endfor %}    
+        Answer: {{ a['Correct_answer']}}
+        <br><br>
+        {% if a['Hint']%}
+        Hint : {{ a['Hint']}}  
+        {% endif %}     
+        ID : {{a['Question_ID']}}    
+<br><br>
+     <form action="{{ url_for('qa')}}" method="post">
+          <input type="hidden" name="qid" value="{{a['Question_ID']}}">  
+          <input type="hidden" name="assessmentid" value={{assessmentid}}> 
+          <button type="submit">Add question to assessment</button>
+        </form> 
+              </div>
+  </div>
+  
+  {% endif %}
+{% endfor %}
+{% if questioncriterea|length == 0%}
+<h4>No available questions, all created questions have been added to assessment</h4>
+{% endif %}
+{% endblock %}
+
+ 

@@ -1,0 +1,40 @@
+{% extends '0_basic.html' %}
+
+{%block content%}
+<div class="home-in">
+  <div class="home-in-greet">
+    <h2>Hello, {{current_user.role.capitalize()}} {{current_user.username.capitalize()}}!</h2>
+  </div>
+  {% if f_assessments or s_assessments%}
+    <div>Formative Assessments</div>
+    {% for assessment in f_assessments %}
+    <div class="home-in-boxes">
+        <div class="home-in-box">
+          <h3>{{ assessment.module_title }} ({{ assessment.intake_year }})</h3>
+          <p>Assessment {{ assessment.assessment_id }}</p>
+          <p>Deadline: {{ assessment.deadline }}</p>
+          <p>Type: Formative</p>
+          <p>Marks: {{ assessment.score_avr }}/100</p>
+          <a href="{{ url_for('ass_detail_l_f', assessment_id=assessment.assessment_id, intake_year=assessment.intake_year) }}">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+
+    <div>Summative Assessments</div>
+    {% for assessment in s_assessments %}
+    <div class="home-in-boxes">
+        <div class="home-in-box">
+          <h3>{{ assessment.module_title }} ({{ assessment.intake_year }})</h3>
+          <p>Assessment {{ assessment.assessment_id }}</p>
+          <p>Deadline: {{ assessment.deadline }}</p>
+          <p>Type: Summative</p>
+          <p>Marks: {{ assessment.score_avr }}/100</p>
+          <a href="{{ url_for('ass_detail_l_f', assessment_id=assessment.assessment_id, intake_year=assessment.intake_year) }}">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <p>No assessments found.</p>
+  {% endif %}
+</div>
+{%endblock%}

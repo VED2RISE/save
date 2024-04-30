@@ -1,0 +1,30 @@
+{% extends '0_basic.html' %}
+
+{%block content%}
+<div class="home-in">
+  <div class="home-in-greet">
+    <h2>Hello, {{current_user.role.capitalize()}} {{current_user.username.capitalize()}}!</h2>
+  </div>
+  <h1>Assessment Details</h1>
+  <p>Module Title: {{ assessment.module_title }}</p>
+  <!-- <p>Deadline: {{ assessment.deadline }}</p> -->
+  <!-- <p>Type: {{ assessment.assessment_type }}</p> -->
+
+  <button onclick="restoreDefault()">Default</button>
+  <button onclick="sortBy('name')">Sort by Name</button>
+  <button onclick="sortBy('score')">Sort by Marks</button>  
+
+    {% for student in students %}
+    <div class="home-in-boxes">
+        <div class="home-in-box">
+          <h3>{{ student.student_id }}</h3>
+          <p>{{ student.student_name }}</p>
+          <p>Marks: {{ student.score }}/100</p>
+          <a href = "/assessments" class="home-in-button">View Details</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script src="{{ url_for('static', filename='upgrade-anny.js') }}"></script>
+{%endblock%}

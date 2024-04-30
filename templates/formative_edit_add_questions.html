@@ -1,0 +1,60 @@
+{%extends '0_basic.html'%}
+
+{% block title %}Edit Formative Assessment{% endblock %}
+{% block content %}
+
+<h1>Add questions</h1>
+
+<div class="search-section">
+    <!-- This section will contain a search bar which when POSTed
+    will retrieve all questions which contain the keywords in Question, Answer or Topic -->
+    <!-- There could also be a section to filter by Type, Points, Lecturer, etc.. -->
+</div>
+<div class="results-section">
+    <!-- This section will default to questions on the topic outlined in the previous page -->
+    <!-- This is where the resulting questions will appear -->
+    <!-- Each question will appear on a card containing Q&A, Topic, and an add button -->
+    
+    {%if tag_questions %}
+    {% for question in tag_questions %}
+    <div class="card border-dark mb-3" >
+        <div class="card-header">{% if question.Tag is not none %} {{question.Tag}} {% endif %}</div>
+        <div class="question-id" style="display: none;">{{question.Question_ID}}</div>
+        <div class="card-body">
+            <h5 class="card-title">Q: {{question.Question}}</h5>
+            <p class="card-text">A: {{question.Answer}}</p>
+        </div>
+        <button data-question="{{ question }}" class="btn btn-secondary add-question-btn">Add</button>
+    </div>    
+    {%endfor%}
+    {%endif%}
+      
+</div>
+
+
+<div class="template-assessment-section">
+    <h3>Your assessment:</h3>
+    <div class="added-questions">
+        {%if current_questions%}
+        {% for question in current_questions %}
+        <div class="card border-dark mb-3" >
+            <div class="card-header">{% if question.Tag is not none %} {{question.Tag}} {% endif %}</div>
+            <div class="question-id" style="display: none;">{{question.Question_ID}}</div>
+            <div class="card-body">
+                <h5 class="card-title">Q: {{question.Question}}</h5>
+                <p class="card-text">A: {{question.Answer}}</p>
+            </div>
+            <button data-question="{{ question }}" class="btn btn-secondary remove-question-btn">Remove</button>
+        </div>    
+        {% endfor %}
+        {%endif%}
+    </div>
+</div>
+<div>
+    <button class="btn btn-secondary"><a href="/formative_edit_assessment/{{ assessment_id }}">Previous</a></button>
+    <button class="btn btn-secondary complete-btn"><a href="/formative_update_assessment/{{ assessment_id }}">Save and Update</a></button>
+</div>
+
+
+{%endblock%}
+

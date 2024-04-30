@@ -1,0 +1,129 @@
+{%extends '0_basic.html'%}
+{% block title %}Formative Assessments{% endblock %}
+{% block content %}
+
+<div class="search-section">
+            
+    <div class="container mt-5 search-container">
+        <h3>Search:</h3>
+        <form action="/formative_assessments_student" method="POST">
+          <div class="fields">
+            <!--  Tags -->
+          <div class="form-group">
+            <label for="tags">Tags</label>
+            <select class="form-control assessment-tags" name="tags">
+                <option selected disabled>Search by tags</option>
+                {% for tag in tag_list %}
+                <option class="tag-option" data-tag-id="{{tag.Tag_Id}}">{{tag.Tag}}</option>
+                {% endfor %}
+                
+            </select>
+            <ul id="selectedTags" style="display: flex; padding-top: 1vh;">
+            </ul>
+          </div>
+              
+          <!-- Difficulty  -->
+          <div class="form-group">
+            <label for="difficulty">Difficulty:</label>
+            <select class="form-control" id="difficulty" name="difficulty">
+                <option selected disabled>Search by difficulty</option>
+                <option>Beginner</option>
+                <option>Intermediate</option>
+                <option>Advanced</option>
+            </select>
+          </div>
+          </div>
+          
+          <br>
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-primary tags-btn-submit">Submit</button>
+        </form>
+      </div>
+</div>
+
+<div class="results-assessments-container">
+    {% if search_results %}
+    <h3>Search results:</h3>
+    <ul>
+    {% for assessment in search_results %}
+        <div class="card border-dark mb-3 live-assessment-card" >
+            <div class="card-header" style="display: flex;">{% if assessment.Tags is not none %} {% for tag in assessment.Tags%}<h5 style="padding-right: 2vw;">{{tag}}</h5>{%endfor%} {% endif %}</div>
+            <div class="card-body">
+                <p class="assessment-ID"  style="display: none;">{{assessment.Assessment_ID}}</p>
+                <h5 class="card-title">{{assessment.Title}}</h5>
+                <p class="card-text">{{assessment.Instructions}}</p>
+                <ul class="live-assessment-text-bottom-row">
+                    <li class="live-assessment-questions">
+                        Q: {{assessment.No_Of_Questions}}
+                    </li>
+                    {%if assessment.Difficulty%}
+                    <li>
+                        {{assessment.Difficulty}}
+                    </li>
+                    {%endif%}
+                    {%if assessment.Module_ID%}
+                    <li>
+                        CMT{{assessment.Module_ID}}
+                    </li>
+                    {%endif%}
+                    {%if assessment.Deadline%}
+                    <li>
+                        {{assessment.Deadline}}
+                    </li>
+                    {%endif%}
+                    {%if assessment.Time_Limit%}
+                    <li>
+                        {{assessment.Time_Limit}}
+                    </li>
+                    {%endif%}
+                    <li>
+                        <a href="/formative_take_assessment/{{ assessment.Assessment_ID }}"><button class="btn btn-primary">Start</button></a>
+                    </li>
+                </ul>
+            </div>
+          </div>
+        {%endfor%}
+    </ul>
+    {%endif%}
+</div>
+
+{% for assessment in formative_assessments %}
+<div class="card border-dark mb-3 live-assessment-card" >
+    <div class="card-header" style="display: flex;">{% if assessment.Tags is not none %} {% for tag in assessment.Tags%}<h5 style="padding-right: 2vw;">{{tag}}</h5>{%endfor%} {% endif %}</div>
+    <div class="card-body">
+        <p class="assessment-ID"  style="display: none;">{{assessment.Assessment_ID}}</p>
+        <h5 class="card-title">{{assessment.Title}}</h5>
+        <p class="card-text">{{assessment.Instructions}}</p>
+        <ul class="live-assessment-text-bottom-row">
+            <li class="live-assessment-questions">
+                {{assessment.No_Of_Questions}}
+            </li>
+            {%if assessment.Difficulty%}
+            <li>
+                {{assessment.Difficulty}}
+            </li>
+            {%endif%}
+            {%if assessment.Module_ID%}
+            <li>
+                CMT{{assessment.Module_ID}}
+            </li>
+            {%endif%}
+            {%if assessment.Deadline%}
+            <li>
+                {{assessment.Deadline}}
+            </li>
+            {%endif%}
+            {%if assessment.Time_Limit%}
+            <li>
+                {{assessment.Time_Limit}}
+            </li>
+            {%endif%}
+            <li>
+                <a href="/formative_take_assessment/{{ assessment.Assessment_ID }}"><button class="btn btn-primary">Start</button></a>
+            </li>
+        </ul>
+    </div>
+  </div>
+{%endfor%}
+
+{% endblock %}

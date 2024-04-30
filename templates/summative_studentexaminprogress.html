@@ -1,0 +1,40 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+
+            {% for q in questions %}
+            <div class="answer-container">
+    <div class="card mb-3">
+        <div class="card-body">
+            <h3>{{ q['Question'] }}</h3>
+            {% for option in q.Options %}
+            
+                <input type="radio" name="selected_option_{{ q.Question_ID}}" value="{{ option }}"> {{ option }}<br>
+
+                {% endfor %}  
+            <input type="hidden" id="correct_answer_text_{{ q['Question_ID']}}" value="{{ q['Correct_answer'] }}">
+            <input type="hidden" id="correct_answer_text_{{ q['Question_ID']}}" value="{{ q['Correct_answer'] }}">
+
+            <br>
+            <div id="feedback_{{ q['Question_ID'] }}" style="display:none;"></div>
+
+
+        </div>
+    </div>
+</div>
+{# below may cause issues #}
+<input id="assessmentid" value="{{ assessmentid }}" style="display:none;"> 
+     
+{% endfor %}
+    <button id="submitbutton" button class="btn btn-primary" type="button" onclick="submitAnswers()">Submit Answer</button>
+    <div id="postsubmissionmsg" style="display: none; text-align: center;"></div>
+{% if scoringtype==1 %}
+<script src="/static/answersum1.js"></script>
+{% else %}
+<script src="/static/answersum2.js"></script>
+{% endif%}
+{% endblock %}
+
+
+

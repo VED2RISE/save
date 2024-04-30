@@ -1,0 +1,60 @@
+{% extends '0_basic.html' %}
+
+{%block content%}
+<div class="home">
+  {% if current_user.is_authenticated %}
+  <div class="home-in">
+    <div class="home-in-greet">
+      <h2>Hello, {{current_user.role.capitalize()}} {{current_user.username.capitalize()}}!</h2>
+    </div>
+<!-- *************** home-box *************** -->
+    <div class="home-in-boxes">
+      {% if current_user.role == "lecturer" %}
+        <div class="home-in-box">
+          <h3>Questions</h3>
+          <p>View all your questions!</p>
+          <a href = "/responses" class="home-in-button">Get Started</a>
+        </div>
+      {% endif %}
+      <div class="home-in-box">
+        <h3>Summative Assessments</h3>
+        
+        {% if current_user.role == "lecturer" %}
+        <p>Create, Edit and Delete Summative Assessments</p>
+        <a href = "/summative_assessments_lecturer" class="home-in-button">Get Started</a>
+        {% else %}
+        <p>Keep track of your upcoming Summative Assessments here!</p>
+        <a href = "/summative_assessments_student" class="home-in-button">Get Started</a>
+        {% endif %}         
+      </div>
+        <div class="home-in-box">
+          <h3>Formative Assessments</h3>
+          
+          {% if current_user.role == "lecturer" %}
+          <p>Create, Edit and Delete Formative Assessments</p>
+          <a href = "/formative_assessments_lecturer" class="home-in-button">Get Started</a>
+          {% else %}
+          <p>Find and take Formative Assessments to upgrade your skills!</p>
+          <a href = "/formative_assessments_student" class="home-in-button">Get Started</a>
+          {% endif %}         
+        </div>
+        <div class="home-in-box">
+          <h3>Results</h3>
+          <p>Review all your results!</p>
+          {% if current_user.role == "lecturer" %}
+          <a href = "/results" class="home-in-button">Get Started</a>
+          {% else %}
+          <a href = "/student_results" class="home-in-button">Get Started</a>
+          {% endif %}   
+        </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="home-out">
+    <h1>UpGrade()</h1>
+    <p>Student-designed automated testing; accelerates feedback, eases staff workload and enhances student satisfaction</p>
+    <a href="/login" class="home-out-button">Get Started</a>
+  </div>
+  {% endif %}
+</div>
+{%endblock%}

@@ -1,0 +1,67 @@
+{%extends '0_basic.html' %}
+
+{% block title %}Edit Assessment{% endblock %}
+
+{%block content%}
+<div class="edit-header">
+    <h1>Edit Assessment</h1>
+    <button class="btn btn-danger delete-assessment-btn-first" onclick="deleteWarning()">Delete assessment</button>
+    <div class="alert alert-danger delete-assessment-msg">
+        <p>Warning! You are about to permanently delete this assessment!</p>
+        <p>Are you sure you want to proceed?</p>
+        <div class="edit-header">
+            <form action="/formative_delete_assessment/{{assessment_dict['Assessment_ID']}}">
+                <button class="btn btn-danger delete-assessment-btn-final"  type="submit">Delete Assessment</button>
+            </form>
+            <button class="btn btn-secondary" onclick="hideWarning()">Cancel</button>
+        </div>
+        
+    </div>
+
+</div>
+
+
+    {%if assessment_dict%}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+
+            {{ form.title.label(class="form-label") }}
+            {{ form.title(class="form-control",  value=assessment_dict['Title']) }}
+            <br>
+            <label for="Tags" class="form-label">Tags</label>
+            <select class="form-control assessment-tags">
+                <option selected disabled>Select a Tag</option>
+                {% for tag in tag_list %}
+                <option class="tag-option" data-tag-id="{{tag.Tag_Id}}">{{tag.Tag}}</option>
+                {% endfor %}
+            </select>
+            <ul id="selectedTags" style="display: flex; padding-top: 1vh;">
+                 
+            </ul>
+            <br>
+            {{ form.module.label(class="form-label")}}
+            {{ form.module(class="form-select form-select-sm")}}
+            <br>
+            {{ form.difficulty.label(class="form-label")}}
+            {{ form.difficulty(class="form-select form-select-sm")}}
+            <br>
+            {{ form.instructions.label(class="form-label")}}
+            {{ form.instructions(class="form-control",  value=assessment_dict['Instructions']) }}
+            <br>
+                        
+            {{ form.available.label(class="form-label") }}
+            <p class="edit-drop-down-data-text">Currently: {%if assessment_dict.Available == 1%}Available{%else%}Unavailable{%endif%}</p>
+            {{ form.available(class="form-select form-select-sm",  selected=assessment_dict.Available ) }}
+            <br>
+            {{ form.submit(class="btn btn-primary") }}
+        
+        </form>        
+
+    {%else%}
+        <p>Assessment Cannot Be Found</p>
+    {%endif%}
+
+    
+
+{%endblock%}

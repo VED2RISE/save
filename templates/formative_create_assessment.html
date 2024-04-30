@@ -1,0 +1,44 @@
+{% extends '0_basic.html' %}
+{% block title %}Create Formative Assessment{% endblock %}
+{% block content %}
+
+<h1>Create a new assessment</h1>
+
+<form method="POST">
+    {{ form.hidden_tag() }}
+    {{ form.title.label(class="form-label") }}
+    {{ form.title(class="form-control") }}
+    <br>
+
+    <label for="Tags" class="form-label">Tags</label>
+    <select class="form-control assessment-tags">
+        <option selected disabled>Select a Tag</option>
+        {% for tag in tag_list %}
+        <option class="tag-option" data-tag-id="{{tag.Tag_Id}}">{{tag.Tag}}</option>
+        {% endfor %}
+        
+    </select>
+    <ul id="selectedTags" style="display: flex; padding-top: 1vh;">
+    </ul>
+    <br>
+    {{ form.module.label(class="form-label")}}
+    {{ form.module(class="form-select form-select-sm")}}
+    <br>
+    {{ form.difficulty.label(class="form-label")}}
+    {{ form.difficulty(class="form-select form-select-sm")}}
+    <br>
+    {{ form.instructions.label(class="form-label")}}
+    {{ form.instructions(class="form-control") }}
+    <br>
+    
+    {{ form.available.label(class="form-label") }}
+    {{ form.available(class="form-select form-select-sm") }}
+    <br>
+    {{ form.submit(class="btn btn-primary tags-btn-submit") }}
+
+</form>
+
+
+<script>
+</script>
+{%endblock%}

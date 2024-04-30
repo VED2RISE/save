@@ -1,0 +1,50 @@
+{%extends '0_basic.html'%}
+{% block title %}Assessments{% endblock %}
+{% block content %}
+
+<form id="assessmentForm" data-assessment-id="{{ assessment.Assessment_ID }}">
+    <h3>{{assessment.Title}}</h3>
+    {% for question in questions %}
+    <div class="answer-container">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h3>{{ loop.index0 + 1 }}. {{ question.Question }}</h3>
+                {% for option in question_options[question.Question_ID] %}
+                <input type="radio" class="selected_option" name="selected_option_{{ question.Question_ID }}" data-question-id="{{ question.Question_ID }}" value="{{ option }}"> {{ option }}<br>
+                {% endfor %}
+                <input type="hidden" class="correct-answer" name="correct_answer_{{ question.Question_ID }}" value="{{ question.Correct_answer }}">
+                <br>
+                <div class="feedback" style="display:none;"></div>
+            </div>
+        </div>
+    </div> 
+    {% endfor %}
+    <button class="btn btn-primary submit-assessment-btn" >Submit Answers</button>
+</form>
+<div class="res-div">
+    <p class="res-msg"></p>
+    <button class="btn btn-primary" id="try-again-btn" style="display: none;"><a href="/formative_take_assessment/{{assessment.Assessment_ID}}" style="text-decoration: none; color: white;">Try again</a></button>
+</div>
+
+<p></p>
+
+<form method="POST" action="/post_comment/{{ assessment.Assessment_ID }}">
+    <div class="comment-section">
+        <h5>Leave a Comment for this Assignment. The lecturer will see it! Only 1 availbale </h5>
+        <textarea name="commentText" rows="4" cols="80" placeholder="Write your comment here..."></textarea>
+        <button type="submit" class="btn btn-success">Post Comment</button>
+    </div>
+</form>
+
+{% for comment in comments %}
+<div class="comment">
+    <p>{{ comment['username'] }}<span class="comment-date"> - posted at {{ comment['time_posted'] }}</span></p>
+    <form method="POST" action="/delete_comment/{{ comment['id'] }}">
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</div>
+{% endfor %}
+
+<script src="/static/answer.js"></script>
+
+{% endblock %}

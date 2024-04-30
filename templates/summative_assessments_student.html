@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+
+    {% for assessment in Studentassessments %}
+    <div class="card">
+        <div class="card-body">
+        <a href="{{ url_for('summative_studentassessmentdetails', assess=assessment['Assessment_ID']) }}" button type="button" >Module ID: {{ assessment['Module_ID'] }} Lecturer:  {{ assessment['Lecturer_ID'] }} Deadline
+            : {{ assessment['Deadline'] }}</a></button>
+        </div>
+    </div>
+        {% else %}
+    <li><h1>no assessments</h1></li>
+{% endfor %}
+
+{% endblock %}

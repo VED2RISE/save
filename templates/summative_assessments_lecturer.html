@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+<h2>Hello, {{current_user.username.capitalize()}}!</h2>
+<div class="home-in-boxes"></div>
+ <div class="home-in-box">
+  <a href="{{ url_for('summative_lectureractiveassessments')}}" button type="button" class="home-in-button">View Active Assesments</button>
+ </div>
+  <div class="home-in-boxes">
+  </div><div class="home-in-box">
+  <a href="{{ url_for('summative_inactiveactiveassessments')}}" button type="button" class="home-in-button">View Inactive Assessments</button>
+   </div>
+   <div class="home-in-boxes">
+    </div><div class="home-in-box">
+    <a href="{{ url_for('summative_createassessment')}}" button type="button" class="home-in-button">Create Assesments</button>
+</div>
+</div>
+{% endblock %}
+

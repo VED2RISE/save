@@ -1,0 +1,24 @@
+<<<<<<< HEAD
+{% extends 'layout.html' %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <ul class="main--list">
+        <li>Questions</li>
+        <li><a href="/assessments">Assessments</a></li>
+        <li>Results</li>
+    </ul>
+=======
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <a href="{{ url_for('lecturerviewpage1')}}" button type="button" class="btn btn-primary btn-lg" >Lecturer</button>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+        <a href="{{ url_for('studentview')}}" button type="button" class="btn btn-primary btn-lg" >Student</button>
+        </div>
+    
+
+>>>>>>> create_and_take_assessment_summative_Luke
+{% endblock %}

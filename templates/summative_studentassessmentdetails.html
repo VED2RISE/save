@@ -1,0 +1,15 @@
+{% extends "index.html" %}
+{% block title %} Assessment Information {% endblock %}
+{% block content %}
+{{ super() }}
+ <div class="home-in-boxes">
+ <div class="home-in-box">
+<h1>Assessment Details:</h1>
+<h2>The instructions are: {{ details['Instructions'] }}</h2>
+<h2>The module_id is: {{ details['Module_ID'] }}</h2>
+<h2>The deadline is: {{ details['Deadline'] }}</h2>
+<h2>scoring type is: {{details['Feedbacktype']}}</h2>
+<a href="{{ url_for('summative_studentexaminprogress', Taketest=details['Assessment_ID'], scoringtype=details['Feedbacktype']) }}" class="home-in-button" >TAKE TEST
+</a></div></div>
+
+{% endblock %}

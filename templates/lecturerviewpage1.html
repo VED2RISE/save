@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block title %} Home {% endblock %}
+{% block content %}
+{{ super() }}
+<h1>Hello, Lecturer</h1>
+
+  <a href="{{ url_for('activeassessments')}}" button type="button" class="btn btn-primary btn-lg">View Active Assesments</button>
+  <a href="{{ url_for('inactiveassessments')}}" button type="button" class="btn btn-secondary btn-lg">View Inactive Assessments</button>
+    <a href="{{ url_for('createassessments')}}" button type="button" class="btn btn-primary btn-lg">Create Assesments</button>
+
+
+{% endblock %}
+

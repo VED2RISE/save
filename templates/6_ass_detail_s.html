@@ -1,0 +1,65 @@
+{% extends '0_basic.html' %}
+
+{% block content %}
+<!-- Existing content -->
+<div class="container">
+    <div class="header">
+        <h1 class="title">{{ module_title }} - Assessment</h1>
+        <p class="info strong">{{ student_name }} - {{ student_id }}</p>
+        <!-- More student info -->
+    </div>
+    <div class="questions">
+        <!-- Dynamically insert question cards -->
+        {% for question in questions %}
+        <div class="question-card">
+            <div class="question-detail">
+                <div class="question-title">No. {{ question.Question_ID }}</div>
+                <div class="question-title">{{ question.Question }}</div>
+                <div class="correct-answer">Correct Answer: {{ question.Correct_Answer }}</div>
+                <div class="student-answer">Your Answer was: {{ 'Correct' if question.Correct else 'Incorrect' }}</div> 
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Chart container -->
+<div class="chart-container" style="width:75%; margin-top: 20px;">
+    <canvas id="scoreChart"></canvas>
+</div>
+
+{% endblock %}
+
+<!-- {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('scoreChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {% for question_detail in questions_and_scores %}"Q{{ loop.index }}", {% endfor %},
+            datasets: [{
+                label: 'Score per Question',
+                backgroundColor: 'rgb(75, 192, 192)',
+                borderColor: 'rgb(75, 192, 192)',
+                data: {% for question_detail in questions_and_scores %}{{ question_detail.Score }}, {% endfor %}
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    suggestedMax: {{ questions_and_scores[0].Max_Score }} // Adjust this value based on your scoring system
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false // Set true to display a legend
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %} -->

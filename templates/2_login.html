@@ -1,0 +1,33 @@
+{% extends '0_basic.html' %}
+
+{%block content%}
+
+<div class="login-box">
+  <p class="login-header">Log In Here</p>
+  <form method="post" action="/login" class="login-form">
+    <p>Username:</p><input type="text" name="username" class="login-input"><br>
+    <p>Role:</p>
+    <select name="role" class="login-input">
+        <option value="lecturer">Lecturer</option>
+        <option value="student">Student</option>
+    </select><br>
+    <input type="submit" value="Log In" class="login-submit">
+  </form>
+
+  
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+      {% for message in messages %}
+        <p class="login_hint">{{ message }}</p>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <div class="login-last">No account yet? Contact us: Team09@gmail.com
+  </div>
+</div>
+
+
+{%endblock%}

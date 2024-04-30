@@ -1,0 +1,17 @@
+{% extends "index.html" %}
+{% block title %} Create Assessments{% endblock %}
+{% block content %}
+{{ super() }}
+
+<h2>Please enter key information to create the assessment:</h2>
+<form action="" method="post" novalidate>
+{{  form.hidden_tag()  }}
+<div>{{ form.MODULEID.label }} {{ form.MODULEID(class="form-control") }}</div>
+<div>{{form.instructions.label}} {{form.instructions}}</div>
+<div>{{form.deadline.label}} {{form.deadline}}</div>
+<div>{{form.Available.label}} {{form.Available}}</div>
+<div>{{form.feedback.label}} {{form.feedback}}</div>
+<div>{{form.st.label}} {{form.st}}</div>
+<div>{{form.submit }}</button></div>
+</form>
+{% endblock %}
