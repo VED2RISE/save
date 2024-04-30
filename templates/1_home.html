@@ -47,6 +47,13 @@
           <a href = "/student_results" class="home-in-button">Get Started</a>
           {% endif %}   
         </div>
+        <div class="home-in-box">
+          <h3>Replies</h3>
+          <p>View replies to your comments</p>
+          {% if not current_user.role == "lecturer" %}
+          <a href = "/replies" class="home-in-button">Get Started</a>
+          {% endif %}   
+        </div>
     </div>
   </div>
   {% else %}
