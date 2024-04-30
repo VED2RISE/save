@@ -50,7 +50,7 @@
             <div class="card-header" style="display: flex;">{% if assessment.Tags is not none %} {% for tag in assessment.Tags%}<h5 style="padding-right: 2vw;">{{tag}}</h5>{%endfor%} {% endif %}</div>
             <div class="card-body">
                 <p class="assessment-ID"  style="display: none;">{{assessment.Assessment_ID}}</p>
-                <h5 class="card-title">{{assessment.Title}}</h5>
+                <h5 class="card-title">{{assessment.Title}} </h5>
                 <p class="card-text">{{assessment.Instructions}}</p>
                 <ul class="live-assessment-text-bottom-row">
                     <li class="live-assessment-questions">
@@ -91,7 +91,7 @@
 <div class="card border-dark mb-3 live-assessment-card" >
     <div class="card-header" style="display: flex;">{% if assessment.Tags is not none %} {% for tag in assessment.Tags%}<h5 style="padding-right: 2vw;">{{tag}}</h5>{%endfor%} {% endif %}</div>
     <div class="card-body">
-        <p class="assessment-ID"  style="display: none;">{{assessment.Assessment_ID}}</p>
+        <h5 class="assessment-ID">{{assessment.Assessment_ID}}</h5>
         <h5 class="card-title">{{assessment.Title}}</h5>
         <p class="card-text">{{assessment.Instructions}}</p>
         <ul class="live-assessment-text-bottom-row">

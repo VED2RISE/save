@@ -58,6 +58,7 @@ def handle_responses():
     if request.method == 'POST':
         comment_id = request.form.get('comment_id')
         reply = request.form.get('reply')
+        reply = current_user.username + " " + "replied: " + reply
         action = request.form.get('action')
 
         with sqlite3.connect(DATABASE) as conn:
@@ -86,6 +87,7 @@ def handle_responses():
 def post_comment(assessmentID):
     username = current_user.username  # Ensure current_user is correctly imported and used
     comment = request.form['commentText']
+    print(comment)
     time_posted = datetime.now()
 
     if not comment:  # Check if the comment is empty
@@ -155,6 +157,7 @@ def formative_take_assessment(assessmentID):
             comment_query = 'SELECT * FROM posts WHERE assessment_id = ? AND username = ?'
             comments_res = cur.execute(comment_query, (assessmentID, current_user.username))
             comments = [dict(comment) for comment in comments_res.fetchall()]
+            print(1)
             print(comments)
 
     except sqlite3.Error as e:

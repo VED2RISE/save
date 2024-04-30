@@ -39,6 +39,7 @@
 {% for comment in comments %}
 <div class="comment">
     <p>{{ comment['username'] }}<span class="comment-date"> - posted at {{ comment['time_posted'] }}</span></p>
+    <p> {{comment["comment_text"]}}</p>
     <form method="POST" action="/delete_comment/{{ comment['id'] }}">
         <button type="submit" class="btn btn-danger">Delete</button>
     </form>
