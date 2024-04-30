@@ -1,0 +1,29 @@
+{% extends '0_basic.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Replies to Your Comments</h2>
+    {% if comments_replies %}
+        <div class="list-group">
+            {% for comment in comments_replies %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Assessment ID: {{ comment['assessment_id'] }}</h5>
+                    <small class="text-muted">Posted at: {{ comment['time_posted'] }}</small>
+                </div>
+                <p class="mb-1">{{ comment['comment_text'] }}</p>
+                {% if comment['reply'] %}
+                    <div class="alert alert-secondary" role="alert">
+                        <strong>Reply:</strong> {{ comment['reply'] }}
+                    </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info" role="alert">
+            No replies to your comments yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

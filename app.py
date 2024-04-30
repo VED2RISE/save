@@ -37,6 +37,22 @@ def init_db():
 
 init_db()
 
+
+@app.route('/replies')
+def user_replies():
+    username = current_user.username  # Assumes the username is stored in session
+    if not username:
+        return "You must be logged in to view this page", 403
+
+    with sqlite3.connect(DATABASE) as conn:
+        conn.row_factory = sqlite3.Row  # Makes row results accessible as dictionaries
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM posts WHERE username = ? ORDER BY time_posted DESC', (username,))
+        comments_and_replies = cur.fetchall()
+        print(comments_and_replies)
+    return render_template('student_replies.html', comments_replies=comments_and_replies)
+
+
 @app.route('/responses', methods=['GET', 'POST'])
 def handle_responses():
     if request.method == 'POST':
@@ -48,6 +64,7 @@ def handle_responses():
             if action == "add":
                 conn.execute('UPDATE posts SET reply = ? WHERE id = ? AND reply IS NULL', (reply, comment_id))
                 conn.commit()
+                print()
                 return jsonify(success=True, reply=reply)
             elif action == "delete":
                 conn.execute('UPDATE posts SET reply = NULL WHERE id = ?', (comment_id,))
