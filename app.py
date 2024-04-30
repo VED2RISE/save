@@ -89,35 +89,37 @@ def handle_responses():
 
 @app.route('/post_comment/<int:assessmentID>', methods=['POST'])
 def post_comment(assessmentID):
-    username = current_user.username  # Ensure current_user is correctly imported and used
+    username = current_user.username
     comment = request.form['commentText']
-    print(comment)
     time_posted = datetime.now()
 
-    if not comment:  # Check if the comment is empty
-        flash("Comment is empty, please write something.")
-        return redirect(url_for('formative_take_assessment', assessmentID=assessmentID))
+    if not comment:
+        return jsonify({"error": "Comment is empty, please write something."}), 400
 
     try:
         with sqlite3.connect(DATABASE) as conn:
-            # Check if this user has already posted a comment for this assessment
-            existing_comment = conn.execute('SELECT * FROM posts WHERE username = ? AND assessment_id = ?', 
-                                            (username, assessmentID)).fetchone()
+            existing_comment = conn.execute(
+                'SELECT * FROM posts WHERE username = ? AND assessment_id = ?', 
+                (username, assessmentID)
+            ).fetchone()
             if existing_comment:
-                flash("You have already posted a comment for this assessment.")
-                return redirect(url_for('formative_take_assessment', assessmentID=assessmentID))
+                return jsonify({"error": "You have already posted a comment for this assessment."}), 400
 
-            # Insert new comment with username
-            conn.execute('INSERT INTO posts (username, assessment_id, comment_text, time_posted) VALUES (?, ?, ?, ?)',
-                         (username, assessmentID, comment, time_posted))
+            cursor = conn.execute(
+                'INSERT INTO posts (username, assessment_id, comment_text, time_posted) VALUES (?, ?, ?, ?)',
+                (username, assessmentID, comment, time_posted)
+            )
             conn.commit()
-            flash("Comment posted successfully.")
+            comment_id = cursor.lastrowid
     except sqlite3.Error as e:
-        print(f"SQLite Error: {e}")
-        flash('Error occurred while posting comment')
-        return redirect(url_for('formative_take_assessment', assessmentID=assessmentID))
+        return jsonify({"error": "Error occurred while posting comment: " + str(e)}), 500
 
-    return redirect(url_for('formative_take_assessment', assessmentID=assessmentID))
+    return jsonify({
+        "username": username, 
+        "comment_text": comment, 
+        "time_posted": time_posted.strftime('%Y-%m-%d %H:%M:%S'),
+        "comment_id": comment_id  # Include the comment_id in the response
+    })
 
 @app.route('/delete_comment/<int:comment_id>', methods=['POST'])
 def delete_comment(comment_id):
@@ -126,9 +128,9 @@ def delete_comment(comment_id):
             conn.execute('DELETE FROM posts WHERE id = ?', (comment_id,))
             conn.commit()
     except sqlite3.Error as e:
-        print(f"Error deleting comment: {e}")
-        return 'Error occurred while deleting comment'
-    return redirect(request.referrer)
+        return jsonify({"error": "Error deleting comment: " + str(e)}), 500
+
+    return jsonify({"success": "Comment deleted successfully", "comment_id": comment_id})
 
 @app.route('/formative_take_assessment/<int:assessmentID>')
 def formative_take_assessment(assessmentID):
